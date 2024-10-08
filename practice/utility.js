@@ -90,10 +90,18 @@ const createData = () => {
 const editObject = (member) => {
   const data = readData();
   const keys = Object.keys(data);
-  const filtered = keys.map((key) => data[key].filter(({ name }) => name === member)).flat().at(0);
+  const objEntries = Object.entries(data);
+  const found = objEntries.forEach(([, value]) => value.find((name) => name === nameToFind));
+  const status = (found.className === 'SigmaBoss' || found.className === 'TumbaUmba')
+  ? 'alive'
+  : found.className === 'BattleDog'
+  ? 'dogs'
+  : 'items';
+  const filtered = data[status].filter(({ name }) => name !== member.name);
   filtered.push(member);
-  data.alive = filtered;
+  data[status] = filtered;
   updateJSON(data);
+  return member;
 };
 
 // удаление объекта
