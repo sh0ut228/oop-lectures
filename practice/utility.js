@@ -87,9 +87,10 @@ const createData = () => {
   return true;
 };
 // изменение данных о состоянии объекта
-const editTribe = (member) => {
+const editObject = (member) => {
   const data = readData();
-  const filtered = data.alive.filter(({ name }) => name !== member.name);
+  const keys = Object.keys(data);
+  const filtered = keys.map((key) => data[key].filter(({ name }) => name === member)).flat().at(0);
   filtered.push(member);
   data.alive = filtered;
   updateJSON(data);
